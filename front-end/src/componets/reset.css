@@ -1,0 +1,88 @@
+/* reset.css */
+:root {
+  --brand-navy: #003b5c;
+  --brand-gold: #f1b500;
+  --field-bg: #e8f1ec;
+  --white: #ffffff;
+  --font-main: "Montserrat", "Poppins", sans-serif;
+}
+
+body {
+  font-family: var(--font-main);
+}
+
+.reset-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--field-bg);
+  padding: 1rem;
+}
+
+.reset-card {
+  background: var(--white);
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 3rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.title {
+  margin: 0 0 0.25rem;
+  font-size: 1.75rem; /* 28px */
+  font-weight: 800;
+  color: var(--brand-navy);
+}
+
+.subtitle,
+.success {
+  font-size: 0.9375rem; /* 15px */
+  color: #41576a;
+  margin: 0 0 1.75rem;
+  line-height: 1.5;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+input[type="password"] {
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+  border: 2px solid var(--field-bg);
+  background: var(--field-bg);
+  border-radius: 4px;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+input[type="password"]:focus {
+  border-color: var(--brand-gold);
+}
+
+.error {
+  color: #d93025;
+  font-size: 0.875rem;
+  margin: -0.5rem 0 0.5rem;
+}
+
+button {
+  background: var(--brand-gold);
+  border: none;
+  color: var(--white);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: #dca200; /* darker gold hover */
+}

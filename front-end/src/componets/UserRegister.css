@@ -57,7 +57,7 @@ h1{
     background-color: #265a79;
 }
 .subcntr2{
-    /* background-color: rgb(238, 244, 244); */
+    background-color: rgb(255, 255, 255);
 
 }
 .h1{
@@ -97,4 +97,26 @@ h1{
 }
 .btn2:hover{
     background-color: #ce9c07bd;
+}
+.hidden{
+    display: none;
+}
+
+@media (max-width:620px){
+    .subcntr1{
+        display: none;
+    }
+    .container{
+        display: flex;
+        justify-content: center;
+    }
+    h1{
+        font-size: 24px;
+    }
+    .signup-form input{
+        width: 250px;
+    }
+    .hidden{
+        display: block;
+    }
 }

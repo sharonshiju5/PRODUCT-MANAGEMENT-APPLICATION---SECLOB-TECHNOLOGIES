@@ -47,7 +47,7 @@ function Register() {
                 <div className="cntr-box">
                     <h1>Welcom Back!</h1>
                     <p>to keep conecte with us pleace <br/> login with your personal info</p>
-                    <button className="btn1" onClick={()=>{navigate("/login")}}>sighn in</button>
+                    <button className="btn1" onClick={()=>{navigate("/login")}}>sign in</button>
                 </div>
             </div>
             <div className="subcntr subcntr2">
@@ -77,6 +77,9 @@ function Register() {
                             onChange={(e) => setData((pre) => ({ ...pre, [e.target.name]: e.target.value }))}
                             value={data.password}
                             />
+                            <u className="hidden">
+                                <h5 onClick={()=>{navigate("/login")}}>sign in</h5>
+                            </u>
                             <ToastContainer
                                 position="top-center"
                                 autoClose={5000}

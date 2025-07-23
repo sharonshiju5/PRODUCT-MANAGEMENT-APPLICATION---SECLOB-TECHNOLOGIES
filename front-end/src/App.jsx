@@ -4,6 +4,8 @@ import reactLogo from './assets/react.svg'
 import './App.css'
 import Register from './componets/UserRegister'
 import Login from './componets/UserLogin'
+import Forgot from './componets/Forgot'
+import Reset from './componets/ChaingePassword'
 // const ThemeContext = createContext(null);
 
 function App() {
@@ -37,6 +39,8 @@ function App() {
             <Route path="/" />
             <Route path="/register" element={<Register/>} />
             <Route path="/login" element={<Login/>} />
+            <Route path="/forgot" element={<Forgot/>} />
+            <Route path="/userchaingepass" element={<Reset/>} />
           </Routes>
         </BrowserRouter>
 
