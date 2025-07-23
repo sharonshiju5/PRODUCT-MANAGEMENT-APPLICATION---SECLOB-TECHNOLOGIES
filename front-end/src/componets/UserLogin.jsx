@@ -18,20 +18,24 @@ function Register() {
     try {
         const res = await axios.post(`${apiPath()}/loginuser`, data);
         console.log(data);
-        if (res.status === 201) {
-        setData({ email: "", password: ""}); 
-          toast(res.data.msg, {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            // transition: Bounce,
-            });
-          navigate("/login");
+        if (res.status === 200) {
+        const { token, msg } = res.data; 
+            if (token) {
+                console.log("Token received:", token);
+                localStorage.setItem("token", token);
+                toast.success(msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                }); 
+                setData({ email: "", password: "" });
+                setTimeout(() => navigate("/"), 3000);
+            }  
         }
     } catch (error) {
         console.log(error);
