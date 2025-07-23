@@ -1,0 +1,100 @@
+:root{
+  /* colour tokens */
+  --brand-navy:  #003B5C;
+  --brand-gold:  #F1B500;
+  --field-bg:    #E8F1EC;
+  --accent-dark: #41576A;
+  --white:       #FFFFFF;
+
+  /* typography tokens */
+  --font-main: 'Montserrat', 'Poppins', sans-serif;
+}
+body{
+    background-color: white;
+    margin: 0;
+    font-family: var(--font-main);
+}
+.container{
+   width: 100vw;
+   height: 100vh;
+   display: flex;
+   /* flex-wrap: wrap; */
+}
+
+.subcntr{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.subcntr1{
+   background: var(--brand-navy);
+  color: var(--white);
+}
+
+.cntr-box{
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+}
+
+h1{
+  font-weight: 800;
+  font-size: 44px;
+}
+.btn1{
+    border: 1px solid white;
+    border-radius: 35px;
+    height: 60px;
+    width: 300px;
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+}
+.btn1:hover{
+    background-color: #265a79;
+}
+.subcntr2{
+    /* background-color: rgb(238, 244, 244); */
+
+}
+.h1{
+    color: var(--brand-gold);
+}
+.cntr-box2{
+
+}
+.signup-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.cntr-box2 input{
+    height: 50px;
+    margin-bottom: 20px;
+    border: 0px;
+    background-color: rgb(238, 244, 244);
+    width: 100%;
+    padding-left: 35px;
+    border-radius: 2px;
+}
+.name{
+    background: url("https://cdn-icons-png.flaticon.com/128/1077/1077063.png") no-repeat left center;
+    background-size: 25px 25px; 
+}
+.email{
+    background: url("https://cdn-icons-png.flaticon.com/128/542/542638.png") no-repeat left center;
+    background-size: 25px 25px;
+}
+.psw{
+    background: url("https://cdn-icons-png.flaticon.com/128/9512/9512572.png") no-repeat left center;
+    background-size: 25px 25px;
+}
+.btn2{
+    background-color: #F1B500;
+}
+.btn2:hover{
+    background-color: #ce9c07bd;
+}
