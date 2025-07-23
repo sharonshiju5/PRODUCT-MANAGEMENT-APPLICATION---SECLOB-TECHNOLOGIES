@@ -128,3 +128,16 @@ export async function reset(req,res) {
         console.log(error);
     }
 }
+
+export async function Home(req,res){
+    try {
+        console.log("end point");
+        console.log(req.user);
+        const _id=req.user.userID;
+        const user=await userSchema.findOne({_id});
+        res.status(200).send({username:user.username,email:user.email})
+        
+    } catch (error) {
+        res.status(400).send({error})
+    }
+}

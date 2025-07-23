@@ -1,12 +1,16 @@
 import { Router } from "express";
 import * as rh from "./RequestHandler/UserRequestHandler.js"
-const router=Router();
+import Auth from "./middleware/auth.js";
 
+
+
+const router=Router();
 
     router.route("/adduser").post(rh.adduser)
     router.route("/loginuser").post(rh.loginuser)
     router.route("/forgetuser").post(rh.forgetPassword)
     router.route("/restpassword").post(rh.reset)
+    router.route("/home").get(Auth,rh.Home);
 
 
 export default router
