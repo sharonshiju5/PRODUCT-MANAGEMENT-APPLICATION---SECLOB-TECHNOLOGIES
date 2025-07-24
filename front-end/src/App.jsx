@@ -10,6 +10,7 @@ import Reset from './componets/ChaingePassword'
 import Home from "./componets/Home"
 import AddProduct from "./componets/Addproduct"
 import Productview from "./componets/Productview"
+import Wishlist from "./componets/Wishlist"
 
 const ThemeContext = createContext(null);
 
@@ -47,6 +48,7 @@ function App() {
             <Route path="/userchaingepass" element={<Reset/>} />
             <Route path="/addproduct" element={<AddProduct/>} />
             <Route path="/productview/:_id" element={<Productview/>} />
+            <Route path="/wishlist" element={<Wishlist/>} />
 
             <Route path="*" element={
               <div style={{

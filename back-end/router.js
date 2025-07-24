@@ -22,6 +22,8 @@ const router=Router();
 
     
     router.route("/addwishlist").post(ad.addwishlist)
+    router.route("/fetchwishlist").post(ad.fetchwishlist)
+    router.route("/removewishlist").post(ad.removewishlist)
 
 
 export default router

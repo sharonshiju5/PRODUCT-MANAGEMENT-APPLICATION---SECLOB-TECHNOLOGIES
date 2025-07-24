@@ -1,5 +1,6 @@
 import Product from "../models/ProductModel.js";
 import Wishlsit from "../models/WishlistModel.js";
+import mongoose from 'mongoose';
 
 export async function addproduct(req, res) {
   try {
@@ -102,5 +103,54 @@ export async function addwishlist(req, res) {
   } catch (error) {
     console.error("Wishlist error:", error);
     res.status(500).send({ error: "Failed to add to wishlist" });
+  }
+}
+
+
+
+export async function fetchwishlist(req, res) {
+  try {
+    const { user } = req.body;
+
+    if (!user) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    // Step 1: Find all wishlists for the user
+    const wishlists = await Wishlsit.find({ user });
+
+    // Step 2: Extract product IDs from wishlists
+    const productIds = wishlists.map(w => w.product._id || w.product);
+
+    // Step 3: Fetch products using those IDs
+    const products = await Product.find({ _id: { $in: productIds } });
+
+    // Step 4: Send response with products and wishlist info
+    res.status(200).send({ products });
+  } catch (error) {
+    console.error("Fetch wishlist error:", error);
+    res.status(500).json({ error: "Failed to fetch wishlist" });
+  }
+}
+
+export async function removewishlist(req, res) {
+  try {
+    const { user, product_id } = req.body;
+
+    // Validate user ObjectId
+    if (!mongoose.Types.ObjectId.isValid(user)) {
+      return res.status(400).json({ message: "Invalid user ID format" });
+    }
+
+    const deleted = await Wishlsit.findOneAndDelete({ user, product_id });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Wishlist item not found" });
+    }
+
+    res.status(200).json({ message: "Item removed from wishlist" });
+  } catch (error) {
+    console.log("Remove wishlist error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 }

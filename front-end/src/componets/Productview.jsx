@@ -44,6 +44,19 @@ useEffect(() => {
 }, [product]);
 
 
+      const addWishlist = async (product_id) => {
+        const user=localStorage.getItem("user_id")
+        try {
+            console.log(user    );
+            
+            const res = await axios.post(`${apiPath()}/addwishlist`,{ product: product_id, user: user,})
+            console.log(res);
+            alert("succesfully added")
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
   return (
     <>
     <Nav/>
@@ -173,7 +186,7 @@ useEffect(() => {
                 <button className="btn btn-primary">Edit product</button>
                 <button className="btn btn-secondary">Buy it now</button>
                 <button className="wishlist-btn">
-                  <Heart className="wishlist-icon" />
+                  <Heart className="wishlist-icon" onClick={()=>{addWishlist(product._id)}} />
                 </button>
               </div>
             </div>

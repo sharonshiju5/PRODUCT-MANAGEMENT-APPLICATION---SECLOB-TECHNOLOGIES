@@ -8,6 +8,9 @@ function Nav({ user, setID, wishlistCount = 0 }) {
   const [search, setsearch] = useState("");
   const [product, setProducts] = useState([]);
 
+
+
+  
   const searchProduct = async () => {
     try {
       const res = await axios.post(`${apiPath()}/searchproduct`, { search });
@@ -61,19 +64,28 @@ console.log(search);
 
 
       <div className="sub-nav nav-sec2">
+        <Link to={"/wishlist"}>
         <img
           src="https://cdn-icons-png.flaticon.com/128/3870/3870922.png"
           className="nav-icon"
           alt=""
-        />
-        <span className="count">{wishlistCount}</span>
-        <span>Sign In</span>
+          />
+        </Link>
+        <Link to={"/login"}>
+        <span
+          onClick={() => {
+            localStorage.removeItem("tokrn");         
+            localStorage.removeItem("user_id");       
+            localStorage.removeItem("currentUser");   
+            window.location.href = "/login";          
+          }}
+        >logout</span>
+        </Link>
         <img
           src="https://cdn-icons-png.flaticon.com/128/4296/4296929.png"
           className="nav-icon"
           alt=""
         />
-        <span className="count">5</span>
         <span>Cart</span>
         {user && <span>Hello {user}</span>}
       </div>

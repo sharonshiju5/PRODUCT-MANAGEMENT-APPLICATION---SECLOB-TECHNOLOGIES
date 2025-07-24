@@ -4,7 +4,7 @@ import axios from "axios";
 import apiPath from "../path";
 import "./css/Home.css"
 import { FaStar, FaChevronDown, FaChevronRight , FaHeart, FaRegHeart } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link,useNavigate } from "react-router";
 
 
 
@@ -15,9 +15,17 @@ function Home({ setID }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const limit = 6;
+    const navigate=useNavigate()
 
     const getuser=async ()=>{
+
         const token = localStorage.getItem("token");
+        if (!token) {
+          alert("session expired")
+          setTimeout(() => {
+            navigate("/login")
+          }, 1000);
+        }
         console.log("Token before request:", token);
         try {
             const res = await axios.get(`${apiPath()}/home`, {

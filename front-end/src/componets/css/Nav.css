@@ -16,6 +16,7 @@ a{
 .nav-sec1{
     display: flex;
     justify-content: end;
+    margin-top: 40px;
 }
 .nav-sec1 input{
     height: 40px;
