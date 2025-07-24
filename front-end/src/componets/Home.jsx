@@ -2,14 +2,22 @@ import { useState,useEffect } from "react";
 import Nav from "./Navbar"
 import axios from "axios";
 import apiPath from "../path";
+import "./Home.css"
+import { FaStar, FaChevronDown, FaChevronRight , FaHeart, FaRegHeart } from "react-icons/fa";
+
+
 
 
 function Home({ setID }) {
-  let [user, setUser] = useState(null);
+    let [user, setUser] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const limit = 6; // 6 products per page
+
     const getuser=async ()=>{
         const token = localStorage.getItem("token");
         console.log("Token before request:", token);
-
         try {
             const res = await axios.get(`${apiPath()}/home`, {
             headers: {
@@ -41,12 +49,121 @@ function Home({ setID }) {
     useEffect(() => {
         getuser();
     },[]);
+
+    // category section
+    const [openCategory, setOpenCategory] = useState(null);
+
+    const toggleCategory = (category) => {
+      setOpenCategory(openCategory === category ? null : category);
+    };
+
+    // product section
+
+    const fetchProduct = async (page) => {
+    try {
+        const res = await axios.get(`${apiPath()}/fetchproduct?page=${page}&limit=${limit}`);
+        const { products, totalPages } = res.data;
+        setProducts(products);
+        setTotalPages(totalPages);
+        setCurrentPage(page);
+    }catch (error) {
+        console.log("Fetch error:", error);
+        }
+    };
+    useEffect(()=>{
+        fetchProduct()
+    },[])
+
+    const handlePageClick = (page) => {
+        if (page >= 1 && page <= totalPages) {
+          fetchProduct(page);
+        }
+    };
     return(
         <>
             <Nav user={user} setID={setID}
             //  wishlistCount={wishlist.length} 
              />
-            
+            <div className="home-sec">
+                <div className="home-nav">
+                    <div className="section section1">
+                        <span>Home</span>
+                        <span><img src="https://cdn-icons-png.flaticon.com/128/271/271228.png" alt="" /></span>
+                    </div>
+                    <div className="section section2">
+                        <button>Add category</button>
+                        <button>Add sub category</button>
+                        <button>Add product</button>
+                    </div>
+                </div>
+                <div className="filter-sec">
+                    <h3>categories</h3>
+                    <h3>All categories</h3>
+
+                    <div className="category-menu">
+                        <h4 onClick={() => toggleCategory("Laptop")} className="category-title">
+                          Laptop {openCategory === "Laptop" ? <FaChevronDown /> : <FaChevronRight />}
+                        </h4>
+                        {openCategory === "Laptop" && (
+                          <ul className="subcategory">
+                            <li>
+                              <label className="custom-checkbox">
+                                <input type="checkbox" id="hp" />
+                                <span className="checkmark"></span>
+                                Hp
+                              </label>
+                            </li>
+                            <li>
+                              <label className="custom-checkbox">
+                                <input type="checkbox" id="dell" />
+                                <span className="checkmark"></span>
+                                Dell
+                              </label>
+                            </li>
+                          </ul>
+                        )}
+                    </div>
+                    
+                </div>
+                <div className="product-sec">
+                  {products.map((product) => (
+                    <div className="product-card" key={product._id}>
+                      <div className="product-img-div">
+                        <img
+                          className="product-img"
+                          src={product.images?.[0] ?? "default-image.jpg"}
+                          alt="product"
+                        />
+                        <FaRegHeart className="heart-icon" style={{ color: "gray" }} />
+                      </div>
+                      <div className="product-details">
+                        <h3>{product.title}</h3>
+                        <span>{product.variants?.[0]?.price ?? "N/A"}</span>
+                        <br />
+                        {[...Array(5)].map((_, i) => (
+                          <FaStar key={i} className="star" />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+
+                <div className="pagination">
+
+                    <div className="pagination-controls">
+                      {[...Array(totalPages)].map((_, idx) => (
+                          <button
+                          key={idx + 1}
+                          className={currentPage === idx + 1 ? "active-page" : ""}
+                          onClick={() => handlePageClick(idx + 1)}
+                          >
+                          {idx + 1}
+                        </button>
+                      ))}
+                    </div>
+                    
+                </div>
+                      </div>
+            </div>
         </>
     )
 }

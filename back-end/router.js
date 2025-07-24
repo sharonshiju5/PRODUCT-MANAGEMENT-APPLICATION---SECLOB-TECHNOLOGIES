@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as rh from "./RequestHandler/UserRequestHandler.js"
+import * as ad from "./RequestHandler/ProductRequstHandler.js"
 import Auth from "./middleware/auth.js";
 
 
@@ -11,6 +12,11 @@ const router=Router();
     router.route("/forgetuser").post(rh.forgetPassword)
     router.route("/restpassword").post(rh.reset)
     router.route("/home").get(Auth,rh.Home);
+
+
+    router.route("/addproduct").post(ad.addproduct)
+    router.route("/fetchproduct").get(ad.fetchproduct)
+
 
 
 export default router
