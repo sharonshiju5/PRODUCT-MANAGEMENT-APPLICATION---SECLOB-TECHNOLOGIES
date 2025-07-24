@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronDown, ChevronLeft, ChevronRight, Upload } from 'lucide-react';
 import axios from 'axios';
 import "./css/Addproduct.css";
@@ -9,6 +9,8 @@ const AddProductModal = () => {
   const [title, setTitle] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [description, setDescription] = useState('');
+  const [categories, setcategies] = useState([]);
+
   const [variants, setVariants] = useState([
     { ram: '', price: '', quantity: 1 }
   ]);
@@ -67,8 +69,23 @@ const AddProductModal = () => {
     } catch (error) {
       console.log("Error adding product:", error);
     }
-  };
+  }
 
+  const fetchcategory=async()=>{
+        try {
+          const res = await axios.get(`${apiPath()}/category/fetch`);
+          console.log(res);
+          if (res.status==200) {
+            setcategies(res.data.categories)
+          }
+  
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      useEffect(()=>{
+        fetchcategory()
+      },[])
   return (
     <div className="modal-overlay">
       <div className="modal-container">
@@ -146,6 +163,7 @@ const AddProductModal = () => {
 
           <div className="form-group">
             <label className="form-label">Sub category :</label>
+
             <div className="select-wrapper">
               <select
                 className="form-select"
@@ -153,10 +171,13 @@ const AddProductModal = () => {
                 onChange={(e) => setSubcategory(e.target.value)}
                 required
               >
-                <option value="">Select</option>
-                <option value="HP">HP</option>
-                <option value="Dell">Dell</option>
-              </select>
+                    {/* <option value="" disabled>Select Category</option> */}
+                  {categories.map((cat) => (
+                    <option className="option-category" key={cat._id} value={cat._id}>
+                      {cat.category}
+                    </option>
+                  ))}
+                </select>
               <ChevronDown size={16} className="select-icon" />
             </div>
           </div>

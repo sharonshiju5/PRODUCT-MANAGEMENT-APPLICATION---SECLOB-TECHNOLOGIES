@@ -26,4 +26,12 @@ const router=Router();
     router.route("/removewishlist").post(ad.removewishlist)
 
 
+    router.route("/category/add").post(ad.createcategory)
+    router.route("/category/fetch").get(ad.fetchcategory)
+    router.route("/subcategory/add").post(ad.createsubcategory)
+    router.route("/subcategory/fetch").post(ad.fetchsubcategory)
+
+
+
+
 export default router

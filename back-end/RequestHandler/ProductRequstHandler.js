@@ -1,5 +1,7 @@
 import Product from "../models/ProductModel.js";
 import Wishlsit from "../models/WishlistModel.js";
+import categorySchema from "../models/CategoryModel.js";
+import subCategorySchema from "../models/SubCategoryModel.js";
 import mongoose from 'mongoose';
 
 export async function addproduct(req, res) {
@@ -152,5 +154,56 @@ export async function removewishlist(req, res) {
   } catch (error) {
     console.log("Remove wishlist error:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+
+
+export async function createcategory(req,res) {
+    try {
+        const{category}=req.body
+        const categories = await categorySchema.create({ category});
+        res.status(200).send({msg:"category created"})
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function fetchcategory(req,res) {
+  try {
+    const categories=await categorySchema.find()
+    res.status(200).send({msg:"category fetched",categories})
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function createsubcategory(req,res) {
+    try {
+        const{category,subcategory}=req.body
+        const categories = await subCategorySchema.create({ category,subcategory});
+        res.status(200).send({msg:"category created"})
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function fetchsubcategory(req, res) {
+  try {
+    const { categoryId } = req.body;
+
+    if (!categoryId) {
+      return res.status(400).json({ message: "Category ID is required" });
+    }
+
+    const subcategories = await subCategorySchema.find({ category: categoryId });
+
+    res.status(200).send({msg:"Subcategories found",subcategories,});
+  } catch (error) {
+    console.log("Fetch subcategory error:", error);
+    res.status(500).send({ message: "Failed to fetch subcategories" });
   }
 }

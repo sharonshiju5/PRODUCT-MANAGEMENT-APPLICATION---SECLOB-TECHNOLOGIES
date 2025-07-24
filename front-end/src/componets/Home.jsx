@@ -10,11 +10,23 @@ import { Link,useNavigate } from "react-router";
 
 
 function Home({ setID }) {
-    let [user, setUser] = useState(null);
-    const [products, setProducts] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const limit = 6;
+  let [user, setUser] = useState(null);
+  const [products, setProducts] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const [category, setCategory] = useState("");
+  const [showcategory, setshowcategory] = useState(false);
+
+  const [categories, setcategies] = useState([]);
+  const [subcategory, setSubcategory] = useState("");
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [showsubcategory, setshowsubcategory] = useState(false);
+  const [openCategory, setOpenCategory] = useState(null);
+
+  const limit = 6;
     const navigate=useNavigate()
 
     const getuser=async ()=>{
@@ -62,11 +74,10 @@ function Home({ setID }) {
     },[]);
 
     // category section
-    const [openCategory, setOpenCategory] = useState(null);
 
-    const toggleCategory = (category) => {
-      setOpenCategory(openCategory === category ? null : category);
-    };
+    // const toggleCategory = (category) => {
+    //   setOpenCategory(openCategory === category ? null : category);
+    // };
 
     // product section
 
@@ -108,6 +119,92 @@ function Home({ setID }) {
     }
 
 
+    const handleAdd = async() => {
+      try {
+        const res = await axios.post(`${apiPath()}/category/add`, { category });
+        if (res.status === 200) {
+          alert("Category added successfully");
+          setTimeout(() => {
+            setshowcategory(false)
+          }, 1500);
+        } else {
+          alert("Something went wrong");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+
+    const fetchcategory=async()=>{
+      try {
+        const res = await axios.get(`${apiPath()}/category/fetch`);
+        console.log(res);
+        if (res.status==200) {
+          setcategies(res.data.categories)
+        }
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    useEffect(()=>{
+      fetchcategory()
+    },[])
+
+
+
+      const Addsubcategory = async () => {
+      // if (!selectedCategory || !subcategory) {
+      //   alert("Please select a category and enter a subcategory name.");
+      //   return;
+      // }
+      try {
+        const res = await axios.post(`${apiPath()}/subcategory/add`, {
+          category: selectedCategory,
+          subcategory: subcategory,
+        });
+      
+        if (res.status === 200) {
+          setshowsubcategory(false)
+          alert("Subcategory added successfully");
+          fetchcategory()
+          setSelectedCategory("");
+          setSubcategory("")
+          setSubcategory("");
+        }
+      } catch (error) {
+        console.error("Error adding subcategory:", error);
+        alert("Failed to add subcategory");
+      }
+    };
+
+
+
+    const [subcategories, setSubcategories] = useState({});
+
+    const toggleCategory = async (categoryId) => {
+      if (openCategory === categoryId) {
+        setOpenCategory(null);
+      } else {
+        setOpenCategory(categoryId);
+      
+        // Only fetch if not already loaded
+        if (!subcategories[categoryId]) {
+          try {
+            const res = await axios.post(`${apiPath()}/subcategory/fetch`, { categoryId });
+
+            setSubcategories((prev) => ({
+              ...prev,
+              [categoryId]: res.data.subcategories,
+            }));
+          } catch (err) {
+            console.error("Failed to fetch subcategories", err);
+          }
+        }
+      }
+    };
+  
     return(
         <>
             <Nav user={user} setID={setID}
@@ -120,41 +217,43 @@ function Home({ setID }) {
                         <span><img src="https://cdn-icons-png.flaticon.com/128/271/271228.png" alt="" /></span>
                     </div>
                     <div className="section section2">
-                        <button>Add category</button>
-                        <button>Add sub category</button>
+                        <button onClick={()=>{setshowcategory(true)}}>Add category</button>
+                        <button onClick={()=>{setshowsubcategory(true)}}>Add sub category</button>
                         <Link to={"/addproduct"}>
                         <button>Add product</button>
                         </Link>
                     </div>
                 </div>
                 <div className="filter-sec">
-                    <h3>categories</h3>
-                    <h3>All categories</h3>
-
-                    <div className="category-menu">
-                        <h4 onClick={() => toggleCategory("Laptop")} className="category-title">
-                          Laptop {openCategory === "Laptop" ? <FaChevronDown /> : <FaChevronRight />}
-                        </h4>
-                        {openCategory === "Laptop" && (
-                          <ul className="subcategory">
-                            <li>
+                  <h3>categories</h3>
+                  <h3>All categories</h3>
+                  {categories.map((catego) => (
+                    <div className="category-menu" key={catego._id}>
+                      <h4
+                        onClick={() => toggleCategory(catego._id)}
+                        className="category-title"
+                      >
+                        {catego.category}{" "}
+                        {openCategory === catego._id ? <FaChevronDown /> : <FaChevronRight />}
+                      </h4>
+                                        
+                      {openCategory === catego._id && (
+                        <ul className="subcategory">
+                          {(subcategories[catego._id] || []).map((subcat) => (
+                            <li key={subcat._id}>
                               <label className="custom-checkbox">
-                                <input type="checkbox" id="hp" />
+                                <input type="checkbox" id={subcat._id} />
                                 <span className="checkmark"></span>
-                                Hp
+                                {subcat.subcategory}
                               </label>
                             </li>
-                            <li>
-                              <label className="custom-checkbox">
-                                <input type="checkbox" id="dell" />
-                                <span className="checkmark"></span>
-                                Dell
-                              </label>
-                            </li>
-                          </ul>
-                        )}
+                          ))}
+                        </ul>
+                      )}
                     </div>
-                    
+                  ))}
+
+                      
                 </div>
                 <div className="product-sec">
                   {products.map((product) => (
@@ -196,6 +295,69 @@ function Home({ setID }) {
                       
                     </div>
                 </div>
+            </div>
+            <div>
+              {showcategory?(
+                <div className="modal-overlay">
+                  <div className="modal-container">
+                    <h2>Add Category</h2>
+                    <input
+                      type="text"
+                      placeholder="Enter category name"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      />
+                    <div className="modal-buttons">
+                      <button className="add-btn" onClick={handleAdd}>ADD</button>
+                      <button className="discard-btn" onClick={()=>{setshowcategory(false)}} >DISCARD</button>
+                    </div>
+                  </div>
+                </div>
+              ):(
+                <></>
+              )
+                    }
+            </div>
+            <div>
+              {showsubcategory?(
+              <div className="modal-overlay">
+                <div className="modal-container">
+                  <h2>Add SubCategory</h2>
+
+                  {/* Category Select Dropdown */}
+                  <select
+                    required
+                    className="category-select"
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                    {/* <option value="" disabled>Select Category</option> */}
+                    {categories.map((cat) => (
+                      <option className="option-category" key={cat._id} value={cat._id}>
+                        {cat.category}
+                      </option>
+                    ))}
+                  </select>
+
+
+
+                  {/* SubCategory Input */}
+                  <input
+                    type="text"
+                    placeholder="Enter subcategory name"
+                    value={subcategory}
+                    onChange={(e) => setSubcategory(e.target.value)}
+                    />
+
+                  <div className="modal-buttons">
+                    <button className="add-btn" onClick={Addsubcategory}>ADD</button>
+                    <button className="discard-btn" onClick={()=>{setshowsubcategory(false)}}>DISCARD</button>
+                  </div>
+                </div>
+              </div>
+              ):(
+              <></>)}
+
             </div>
         </>
     )
