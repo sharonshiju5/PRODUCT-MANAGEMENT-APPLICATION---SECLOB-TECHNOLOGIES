@@ -1,6 +1,6 @@
 // ForgotPasswordPage.jsx
 import React, { useState } from "react";
-import "./Forgot.css";
+import "./css/Forgot.css";
 import axios from "axios";
 import apiPath from "../path.js";
 

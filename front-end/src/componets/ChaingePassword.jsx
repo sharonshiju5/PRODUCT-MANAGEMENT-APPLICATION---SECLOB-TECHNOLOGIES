@@ -1,6 +1,6 @@
 // ResetPasswordSection.jsx
 import React, { useState } from "react";
-import "./ChaingePassword.css";
+import "./css/ChaingePassword.css";
 import axios from "axios";
 import apiPath from "../path";
 

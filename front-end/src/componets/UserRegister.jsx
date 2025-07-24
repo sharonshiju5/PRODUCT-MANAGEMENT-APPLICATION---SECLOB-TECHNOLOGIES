@@ -1,7 +1,7 @@
 import axios from "axios";
 import apiPath from "../path.js";
 import { useState } from "react";
-import "./UserRegister.css"
+import "./css/UserRegister.css"
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from "react-router";
 import { useEffect } from "react";

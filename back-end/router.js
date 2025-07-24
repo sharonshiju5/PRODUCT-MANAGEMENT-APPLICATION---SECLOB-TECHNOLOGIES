@@ -7,6 +7,7 @@ import Auth from "./middleware/auth.js";
 
 const router=Router();
 
+
     router.route("/adduser").post(rh.adduser)
     router.route("/loginuser").post(rh.loginuser)
     router.route("/forgetuser").post(rh.forgetPassword)
@@ -16,7 +17,11 @@ const router=Router();
 
     router.route("/addproduct").post(ad.addproduct)
     router.route("/fetchproduct").get(ad.fetchproduct)
+    router.route("/searchproduct").post(ad.searchproduct)
+    router.route("/productview").post(ad.singleproduct)
 
+    
+    router.route("/addwishlist").post(ad.addwishlist)
 
 
 export default router

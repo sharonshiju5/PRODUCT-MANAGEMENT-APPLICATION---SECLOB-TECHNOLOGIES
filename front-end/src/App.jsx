@@ -8,6 +8,8 @@ import Login from './componets/UserLogin'
 import Forgot from './componets/Forgot'
 import Reset from './componets/ChaingePassword'
 import Home from "./componets/Home"
+import AddProduct from "./componets/Addproduct"
+import Productview from "./componets/Productview"
 
 const ThemeContext = createContext(null);
 
@@ -43,6 +45,8 @@ function App() {
             <Route path="/login" element={<Login/>} />
             <Route path="/forgot" element={<Forgot/>} />
             <Route path="/userchaingepass" element={<Reset/>} />
+            <Route path="/addproduct" element={<AddProduct/>} />
+            <Route path="/productview/:_id" element={<Productview/>} />
 
             <Route path="*" element={
               <div style={{

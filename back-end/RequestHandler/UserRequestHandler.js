@@ -135,7 +135,7 @@ export async function Home(req,res){
         console.log(req.user);
         const _id=req.user.userID;
         const user=await userSchema.findOne({_id});
-        res.status(200).send({username:user.username,email:user.email})
+        res.status(200).send({username:user.username,email:user.email,user_id:_id})
         
     } catch (error) {
         res.status(400).send({error})
