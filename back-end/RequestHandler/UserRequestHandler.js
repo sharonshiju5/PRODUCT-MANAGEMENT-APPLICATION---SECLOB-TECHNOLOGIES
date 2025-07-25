@@ -1,4 +1,4 @@
-import userSchema from "../models/user.model.js"
+import userSchema from "../models/UserModel.js"
 import bcrypt from "bcrypt"
 import jrk from "jsonwebtoken"
 import nodemailer from "nodemailer";
